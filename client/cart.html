@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>तुमचे कार्ट — YugaNaturals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="announce">
+    <strong>₹४९९</strong> पेक्षा जास्त ऑर्डरवर मोफत शिपिंग
+  </div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand"><span class="brand-mark">Y</span>
+        <span>YugaNaturals<small>लाकडी घाण्यावर काढलेले • शेतातून थेट</small></span>
+      </a>
+      <nav class="nav"><a href="/">तेले</a><a href="/#story">आमची कथा</a><a href="/#process">घाण्याची प्रक्रिया</a></nav>
+      <div class="header-actions">
+        <a href="/cart.html" class="icon-btn active" aria-label="कार्ट">🛒 <span class="count" id="cartCount">0</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="crumbs" style="margin: 24px 0 0;"><a href="/">मुख्यपृष्ठ</a> &nbsp;›&nbsp; तुमचे कार्ट</div>
+    <h1 style="margin: 8px 0 16px;">तुमचे कार्ट</h1>
+    <section class="cart-page" id="cartPage">
+      <div class="cart-items" id="cartItems">
+        <div style="padding:40px; text-align:center; color:var(--muted)">लोड होत आहे…</div>
+      </div>
+      <aside class="summary" id="summary" style="display:none;">
+        <h3>ऑर्डरचा सारांश</h3>
+        <div class="summary-row"><span>उप-एकूण</span><span id="sumSubtotal">₹0</span></div>
+        <div class="summary-row"><span>तुमची बचत</span><span id="sumSavings" style="color:var(--accent-dk); font-weight:600;">−₹0</span></div>
+        <div class="summary-row"><span>शिपिंग</span><span id="sumShipping">मोफत</span></div>
+        <div class="summary-row total"><span>एकूण</span><span id="sumTotal">₹0</span></div>
+        <button class="btn wide" style="margin-top:16px;" onclick="alert('या डेमोमध्ये चेकआउट जोडलेले नाही 🙂')">चेकआउटकडे जा →</button>
+        <p class="note">कर चेकआउटमध्ये मोजले जातील. डेमो स्टोअर — कोणतेही खरे पेमेंट केले जाणार नाही.</p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom" style="margin:0;border:0;padding:24px 0;">© २०२६ YugaNaturals Farms Pvt. Ltd.</div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/cart.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd84a"/>
+      <stop offset="100%" stop-color="#c89108"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff33"/>
+      <stop offset="45%" stop-color="#ffffff00"/>
+      <stop offset="100%" stop-color="#00000022"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="200" cy="370" rx="110" ry="10" fill="#00000010"/>
+  <!-- cap -->
+  <rect x="170" y="60" width="60" height="28" rx="5" fill="#3f5927"/>
+  <rect x="175" y="86" width="50" height="14" rx="3" fill="#5b7d3a"/>
+  <!-- bottle body -->
+  <path d="M155 108 Q155 98 165 98 H235 Q245 98 245 108 L260 195 Q270 235 260 280 Q250 330 200 342 Q150 330 140 280 Q130 235 140 195 Z"
+        fill="url(#g)" stroke="#6a4a15" stroke-width="2"/>
+  <!-- glass highlight -->
+  <path d="M155 108 Q155 98 165 98 H235 Q245 98 245 108 L260 195 Q270 235 260 280 Q250 330 200 342 Q150 330 140 280 Q130 235 140 195 Z"
+        fill="url(#glass)"/>
+  <!-- label -->
+  <rect x="152" y="190" width="96" height="90" rx="4" fill="#fbf7ef" stroke="#c89108" stroke-width="1.5"/>
+  <text x="200" y="220" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="14" fill="#3f5927" font-weight="700">YUGA</text>
+  <text x="200" y="236" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="9" fill="#5a4a3a">WOOD-PRESSED</text>
+  <text x="200" y="258" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="11" fill="#c89108" font-weight="700">SUNFLOWER</text>
+  <text x="200" y="272" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="8" fill="#8a7a68">OIL • 1 L</text>
+</svg>
