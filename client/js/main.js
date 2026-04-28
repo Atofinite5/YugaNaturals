@@ -8,30 +8,42 @@
 
   let all = [];
 
-  function renderCard(p) {
+  function renderCard(p, idx) {
     const s500 = p.sizes.find(s => s.size === 500);
     const price = s500.price, mrp = s500.mrp;
     const save  = YugaUI.pct(mrp, price);
-    const badge = p.badge
-      ? `<span class="badge${/premium/i.test(p.badge) ? ' gold' : ''}">${p.badge}</span>`
-      : '';
+    const isNewLaunch = (p.reviewCount || 0) < 100;
+    const link = `/product.html?slug=${encodeURIComponent(p.slug)}`;
+
     return `
       <article class="card">
-        <a href="/product.html?slug=${encodeURIComponent(p.slug)}" class="card-media" aria-label="${p.name}">
-          ${badge}
-          ${YugaUI.productImage(p)}
+        <a href="${link}" class="card-media" aria-label="${p.name}">
+          <div class="card-ribbons">
+            ${isNewLaunch
+              ? '<span class="card-ribbon-new">New Launch</span>'
+              : `<span class="card-ribbon-off">${save}% OFF</span>`}
+          </div>
+          <img class="card-img card-img-front" src="${YugaUI.productImageFront(p)}" alt="${p.name}" loading="lazy" />
+          <img class="card-img card-img-back"  src="${YugaUI.productImageHover(p)}" alt="${p.name}" loading="lazy" />
+          <div class="card-overlay">
+            <button class="card-add" data-id="${p.id}" aria-label="कार्टमध्ये जोडा">
+              <span>ADD</span>
+              <span class="add-cart-icon">🛒</span>
+            </button>
+          </div>
         </a>
         <div class="card-body">
-          <div class="card-region">${p.sourceRegion || ''}</div>
-          <h3><a href="/product.html?slug=${encodeURIComponent(p.slug)}">${p.name}</a></h3>
-          <p class="desc">${p.shortDesc || ''}</p>
-          <div class="rating">★★★★★ <span>(${p.reviewCount || 0})</span></div>
+          <h3><a href="${link}">${p.name} – ५०० मिली</a></h3>
+          <div class="rating">
+            <span class="stars">★</span>
+            <strong>${p.rating || '—'}</strong>
+            <span class="rev">(${p.reviewCount || 0} पुनरावलोकने)</span>
+          </div>
           <div class="price-row">
             <span class="price">${YugaUI.inr(price)}</span>
             <span class="mrp">${YugaUI.inr(mrp)}</span>
-            <span class="save">−${save}%</span>
+            <span class="save-tag">${save}% off</span>
           </div>
-          <button class="btn" data-id="${p.id}">५०० मिली जोडा · ${YugaUI.inr(price)}</button>
         </div>
       </article>
     `;
@@ -58,22 +70,24 @@
       return 0;
     });
 
-    grid.innerHTML = list.map(renderCard).join('') ||
+    grid.innerHTML = list.map((p, i) => renderCard(p, i)).join('') ||
       `<p style="grid-column:1/-1; text-align:center; color:var(--muted); padding:40px 0;">तुमच्या शोधाशी जुळणारे कोणतेही तेल नाही.</p>`;
     countLbl.textContent = `${list.length} तेल`;
+    YugaUI.setupReveal();
 
     // Attach add-to-cart handlers
     grid.querySelectorAll('button[data-id]').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         e.preventDefault();
+        e.stopPropagation();
         btn.disabled = true;
         const prev = btn.textContent;
-        btn.textContent = 'जोडत आहे…';
+        btn.textContent = '…';
         try {
           await YugaAPI.addItem(Number(btn.dataset.id), 500, 1);
           YugaUI.toast('कार्टमध्ये जोडले');
           YugaUI.refreshCartCount();
-          btn.textContent = '✓ जोडले';
+          btn.textContent = '✓';
           setTimeout(() => { btn.textContent = prev; btn.disabled = false; }, 1200);
         } catch (err) {
           YugaUI.toast('जोडता आले नाही — ' + err.message);

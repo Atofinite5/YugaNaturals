@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — YugaNaturals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/admin/admin.css" />
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="whiteToAlpha" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="
+          1 0 0 0 0
+          0 1 0 0 0
+          0 0 1 0 0
+          -2.5 -2.5 -2.5 0 6.5" result="keyed"/>
+        <feComposite in="keyed" in2="SourceGraphic" operator="in"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <header class="admin-header">
+    <a href="/" class="brand"><span class="wordmark">yugaNaturals</span></a>
+    <div class="admin-header-mid">
+      <span class="admin-badge">Admin</span>
+      <span class="admin-user" id="adminUser">…</span>
+    </div>
+    <div class="admin-header-actions">
+      <a href="/" class="btn outline">← Storefront</a>
+      <button class="btn ghost" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <main class="admin-page">
+    <!-- Gate: shown until we know the user is an admin -->
+    <section class="admin-gate" id="adminGate">
+      <div class="admin-gate-card">
+        <h1>Admin Access</h1>
+        <p id="gateMsg" class="muted">Checking access…</p>
+        <div id="gateActions" class="admin-gate-actions"></div>
+      </div>
+    </section>
+
+    <!-- Dashboard: shown after gate passes -->
+    <section class="admin-dash" id="adminDash" hidden>
+      <div class="admin-toolbar">
+        <h1>Products</h1>
+        <div class="admin-toolbar-right">
+          <input type="search" id="adminSearch" placeholder="Filter by name / slug…"/>
+          <button class="btn" id="newProductBtn">+ New product</button>
+        </div>
+      </div>
+
+      <div id="adminFlash" class="admin-flash" hidden></div>
+
+      <div class="admin-table-wrap">
+        <table class="admin-table" id="productsTable">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name / Slug</th>
+              <th>Price (500ml)</th>
+              <th>Stock</th>
+              <th>Rating</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="productsBody">
+            <tr><td colspan="6" class="muted center">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Editor modal (create + edit share this) -->
+  <div class="auth-modal" id="editorModal" hidden>
+    <div class="admin-editor">
+      <button class="auth-close" id="editorClose" aria-label="Close">✕</button>
+      <h2 id="editorTitle">New product</h2>
+
+      <form id="productForm" class="admin-form">
+        <div class="admin-form-row">
+          <label>Slug
+            <input name="slug" required placeholder="cold-pressed-coconut-oil"/>
+          </label>
+          <label>Name
+            <input name="name" required placeholder="Cold-pressed Coconut Oil"/>
+          </label>
+        </div>
+
+        <label>Short description
+          <input name="shortDesc" placeholder="One-line tagline"/>
+        </label>
+        <label>Long description
+          <textarea name="longDesc" rows="3" placeholder="Detailed copy shown on the product page"></textarea>
+        </label>
+
+        <div class="admin-form-row">
+          <label>Wood type
+            <input name="woodType" placeholder="Sheesham wood"/>
+          </label>
+          <label>Source region
+            <input name="sourceRegion" placeholder="Coastal Karnataka"/>
+          </label>
+        </div>
+
+        <div class="admin-form-row">
+          <label>Front image
+            <div class="img-input-row">
+              <input name="image" placeholder="/frames/001.png"/>
+              <button type="button" class="btn outline upload-btn" data-target="image">⬆ Upload</button>
+            </div>
+            <input type="file" hidden accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" data-uploads="image"/>
+            <span class="hint">Pick a file from your computer, paste a URL like <code>https://...</code>, or use a path like <code>/frames/001.png</code></span>
+          </label>
+          <label>Hover image
+            <div class="img-input-row">
+              <input name="imageHover" placeholder="/frames/250.png"/>
+              <button type="button" class="btn outline upload-btn" data-target="imageHover">⬆ Upload</button>
+            </div>
+            <input type="file" hidden accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" data-uploads="imageHover"/>
+            <span class="hint">Shown when the user hovers the card</span>
+          </label>
+        </div>
+
+        <div class="image-preview-row">
+          <div class="image-preview" data-preview="image"><span>Front preview</span></div>
+          <div class="image-preview" data-preview="imageHover"><span>Hover preview</span></div>
+        </div>
+
+        <div class="admin-form-row">
+          <label>Badge
+            <input name="badge" placeholder="Bestseller"/>
+          </label>
+          <label>Rating
+            <input name="rating" type="number" min="0" max="5" step="0.1" placeholder="4.7"/>
+          </label>
+          <label>Review count
+            <input name="reviewCount" type="number" min="0" step="1" placeholder="0"/>
+          </label>
+          <label>Stock
+            <input name="stock" type="number" min="0" step="1" placeholder="100"/>
+          </label>
+        </div>
+
+        <div class="admin-form-section">
+          <h3>Pricing (₹)</h3>
+          <div class="admin-form-row">
+            <label>Price · 500 ml<input name="price500"  type="number" min="0" step="1"/></label>
+            <label>Price · 1 L<input    name="price1000" type="number" min="0" step="1"/></label>
+            <label>Price · 2 L<input    name="price2000" type="number" min="0" step="1"/></label>
+          </div>
+          <div class="admin-form-row">
+            <label>MRP · 500 ml<input  name="mrp500"  type="number" min="0" step="1"/></label>
+            <label>MRP · 1 L<input     name="mrp1000" type="number" min="0" step="1"/></label>
+            <label>MRP · 2 L<input     name="mrp2000" type="number" min="0" step="1"/></label>
+          </div>
+        </div>
+
+        <div class="admin-form-actions">
+          <button type="button" class="btn outline" id="cancelBtn">Cancel</button>
+          <button type="submit" class="btn" id="saveBtn">Save product</button>
+        </div>
+        <div class="auth-msg" data-msg></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/admin/admin.js"></script>
+</body>
+</html>
