@@ -7,78 +7,183 @@
   <meta name="description" content="भारतातील लहान शेतांतून पारंपरिक लाकडी घाण्यावर काढलेली स्वयंपाकाची तेले. अनरिफाइंड, रसायनमुक्त आणि जुन्या पद्धतीने हळूवार काढलेली." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css" />
 </head>
 <body>
+  <!-- Aggressive luma→alpha key: zeros out white AND the light-gray render shadow.
+       alpha' = clamp(6.5 - 2.5(R+G+B))  — white sum=3 → -1; shadow gray sum≈2.55 → 0.125;
+       colored bottle pixels (sum ≤ 2) → fully opaque. Composite-in preserves source alpha. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="whiteToAlpha" color-interpolation-filters="sRGB">
+        <feColorMatrix type="matrix" values="
+          1 0 0 0 0
+          0 1 0 0 0
+          0 0 1 0 0
+          -2.5 -2.5 -2.5 0 6.5" result="keyed"/>
+        <feComposite in="keyed" in2="SourceGraphic" operator="in"/>
+      </filter>
+    </defs>
+  </svg>
+
   <div class="announce">
-    <strong>₹499</strong> पेक्षा जास्त ऑर्डरवर संपूर्ण भारतभर मोफत शिपिंग • शेतातून ताजे, या आठवड्यात घाण्यावर काढलेले
+    सर्व प्रीपेड ऑर्डरवर अतिरिक्त <strong>२% सूट</strong> • ₹४९९ पेक्षा जास्तवर मोफत शिपिंग
   </div>
 
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="brand" aria-label="YugaNaturals मुख्यपृष्ठ">
-        <span class="brand-mark">Y</span>
-        <span>
-          YugaNaturals
-          <small>लाकडी घाण्यावर काढलेले • शेतातून थेट</small>
-        </span>
+        <span class="wordmark">yugaNaturals</span>
       </a>
       <nav class="nav" aria-label="Primary">
-        <a href="/" class="active">तेले</a>
+        <a href="/" class="active">सर्व तेले</a>
+        <a href="/">लाकडी घाणी</a>
+        <a href="/">भेट संच</a>
+        <a href="/">शॉप ▾</a>
         <a href="/#story">आमची कथा</a>
-        <a href="/#process">घाण्याची प्रक्रिया</a>
         <a href="/#journal">जर्नल</a>
       </nav>
       <div class="header-actions">
-        <button class="icon-btn" aria-label="शोध" id="searchBtn">🔍</button>
+        <button class="icon-btn" aria-label="शोध" data-action="search" id="searchBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5"/>
+            <line x1="16" y1="16" x2="20.5" y2="20.5"/>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="खाते" data-action="account">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="10" r="3"/>
+            <path d="M6 19 C 7 16 9 15 12 15 C 15 15 17 16 18 19"/>
+          </svg>
+        </button>
         <a href="/cart.html" class="icon-btn" aria-label="कार्ट">
-          🛒 <span class="count" id="cartCount">0</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 4 H5 L7 16 H18 L20 8 H7"/>
+            <line x1="10" y1="11" x2="16" y2="11"/>
+            <circle cx="9" cy="20" r="1.4"/>
+            <circle cx="17" cy="20" r="1.4"/>
+          </svg>
+          <span class="count" id="cartCount">0</span>
         </a>
       </div>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="container hero-inner">
-      <div>
-        <div class="hero-kicker">कच्ची घाणी • थंड-दाबून काढलेले • रसायनमुक्त</div>
-        <h1>आजीच्या आठवणीतले तेल, त्याच पद्धतीने काढलेले.</h1>
-        <p>भारतभरातील लहान शेतकऱ्यांकडून थेट घेतलेल्या उन्हात वाळवलेल्या बियांपासून, लाकडी घाण्यावर हळूवार काढलेले. रिफायनिंग नाही, ब्लीचिंग नाही, डिओडोरायझिंग नाही — तेल जसे असायला हवे, अगदी तसेच.</p>
-        <a href="#collection" class="btn wide" style="width:auto; display:inline-flex;">संपूर्ण संग्रह पहा →</a>
-        <div class="hero-stats">
-          <div><strong>८</strong><span>एकल-मूळ तेले</span></div>
-          <div><strong>&lt; ४२°C</strong><span>घाण्याचे तापमान</span></div>
-          <div><strong>१२,०००+</strong><span>समाधानी स्वयंपाकघरे</span></div>
+  <section class="hero-banner">
+    <div class="container hero-banner-inner">
+      <div class="hero-banner-copy">
+        <div class="hero-kicker">लाकडी घाण्यावर काढलेली तेले</div>
+        <h1>प्रत्येक घरात, आजीच्या घाण्याची चव.</h1>
+        <div class="hero-taglines">
+          <span>अनरिफाइंड</span>
+          <em>|</em>
+          <span>लाकडी घाणी</span>
+          <em>|</em>
+          <span>शेतातून थेट</span>
         </div>
+        <a href="#collection" class="btn-pill">संग्रह पहा</a>
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="bottleG" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#f4c76d"/>
-              <stop offset="100%" stop-color="#c98a29"/>
-            </linearGradient>
-          </defs>
-          <ellipse cx="200" cy="370" rx="120" ry="12" fill="#00000012"/>
-          <rect x="170" y="60" width="60" height="30" rx="6" fill="#3f5927"/>
-          <rect x="175" y="88" width="50" height="16" rx="3" fill="#5b7d3a"/>
-          <path d="M155 110 Q155 100 165 100 H235 Q245 100 245 110 L260 200 Q270 240 260 280 Q250 330 200 340 Q150 330 140 280 Q130 240 140 200 Z" fill="url(#bottleG)" stroke="#7a5a18" stroke-width="2"/>
-          <rect x="155" y="200" width="90" height="80" rx="4" fill="#fbf7ef" stroke="#c98a29" stroke-width="2"/>
-          <text x="200" y="232" text-anchor="middle" font-family="Noto Sans Devanagari, Inter, sans-serif" font-size="15" fill="#3f5927" font-weight="700">युगा</text>
-          <text x="200" y="250" text-anchor="middle" font-family="Noto Sans Devanagari, Inter, sans-serif" font-size="10" fill="#5a4a3a">लाकडी घाणी</text>
-          <text x="200" y="268" text-anchor="middle" font-family="Noto Sans Devanagari, Inter, sans-serif" font-size="10" fill="#5a4a3a">स्वयंपाकाचे तेल</text>
-        </svg>
+      <div class="hero-banner-card" aria-hidden="true">
+        <div class="bottle-stage">
+          <svg class="leaf leaf-1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2 C 5 7, 4 15, 12 22 C 20 15, 19 7, 12 2 Z" fill="currentColor"/>
+            <path d="M12 4 L 12 21" stroke="rgba(255,255,255,.45)" stroke-width="0.8" fill="none"/>
+            <path d="M12 9 L 8 12 M12 13 L 8 16 M12 9 L 16 12 M12 13 L 16 16" stroke="rgba(255,255,255,.3)" stroke-width="0.6" fill="none"/>
+          </svg>
+          <svg class="leaf leaf-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2 C 5 7, 4 15, 12 22 C 20 15, 19 7, 12 2 Z" fill="currentColor"/>
+            <path d="M12 4 L 12 21" stroke="rgba(255,255,255,.45)" stroke-width="0.8" fill="none"/>
+          </svg>
+          <svg class="leaf leaf-3" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2 C 5 7, 4 15, 12 22 C 20 15, 19 7, 12 2 Z" fill="currentColor"/>
+            <path d="M12 4 L 12 21" stroke="rgba(255,255,255,.45)" stroke-width="0.8" fill="none"/>
+          </svg>
+          <div class="bottle-glow"></div>
+          <div class="bottle-ripple"></div>
+          <div class="bottle-3d" id="bottleStage">
+            <img class="bottle-frame" id="bottleFrame" src="/frames/001.png" alt="३डी बॉटल" draggable="false" />
+          </div>
+          <div class="bottle-shadow"></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="trust">
+  <section class="trust-strip">
     <div class="container trust-inner">
-      <div class="trust-item"><span class="trust-icon">🌱</span> १००% रसायनमुक्त, अनरिफाइंड</div>
-      <div class="trust-item"><span class="trust-icon">🪵</span> पारंपरिक लाकडी घाणी</div>
-      <div class="trust-item"><span class="trust-icon">🚚</span> ₹४९९ पेक्षा जास्तवर मोफत शिपिंग</div>
-      <div class="trust-item"><span class="trust-icon">↺</span> ७ दिवसांत सोपी परतफेड</div>
+      <div class="trust-item"><span class="trust-icon">🌱</span> १००% रसायनमुक्त</div>
+      <div class="trust-item"><span class="trust-icon">🪵</span> लाकडी घाणी</div>
+      <div class="trust-item"><span class="trust-icon">🚚</span> ₹४९९+ मोफत शिपिंग</div>
+      <div class="trust-item"><span class="trust-icon">↺</span> ७ दिवसांत परतफेड</div>
+    </div>
+  </section>
+
+  <section class="welcome">
+    <div class="container">
+      <div class="welcome-kicker">Welcome to YugaNaturals!</div>
+      <h2 class="welcome-title">शुद्धतेच्या एक पाऊल जवळ</h2>
+      <div class="cat-pills" role="tablist">
+        <button class="cat-pill active" data-cat="all" role="tab">
+          <span class="cat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 11 L12 4 L20 11 V20 H4 Z"/>
+              <path d="M10 20 V14 H14 V20"/>
+            </svg>
+          </span><span>सर्व</span>
+        </button>
+        <button class="cat-pill" data-cat="cooking" role="tab">
+          <span class="cat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <ellipse cx="10" cy="14" rx="6" ry="2.5"/>
+              <path d="M4 14 a6 2.5 0 0 0 12 0"/>
+              <path d="M16 14 L22 14"/>
+            </svg>
+          </span><span>स्वयंपाक</span>
+        </button>
+        <button class="cat-pill" data-cat="tadka" role="tab">
+          <span class="cat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3 C 9 8 7 11 8 15 C 9 19 12 21 12 21 C 12 21 15 19 16 15 C 17 11 15 8 12 3 Z"/>
+              <path d="M12 9 C 11 12 11 15 12 18"/>
+            </svg>
+          </span><span>फोडणी</span>
+        </button>
+        <button class="cat-pill" data-cat="bulk" role="tab">
+          <span class="cat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 7 L12 3 L21 7 V17 L12 21 L3 17 Z"/>
+              <path d="M3 7 L12 11 L21 7"/>
+              <path d="M12 11 V21"/>
+            </svg>
+          </span><span>कंबो</span>
+        </button>
+        <button class="cat-pill" data-cat="salad" role="tab">
+          <span class="cat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 12 H21 a9 7 0 0 1 -18 0 Z"/>
+              <path d="M12 12 C 12 8 14 6 17 6 C 16 9 14 11 12 12"/>
+              <path d="M10 12 C 10 9 8 7 6 7"/>
+            </svg>
+          </span><span>कच्चे वापर</span>
+        </button>
+        <button class="cat-pill" data-cat="deal" role="tab">
+          <span class="cat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 12 V4 H11 L21 14 L13 22 L3 12 Z"/>
+              <circle cx="7.5" cy="8.5" r="1.4"/>
+            </svg>
+          </span><span>ऑफर</span>
+        </button>
+        <button class="cat-pill" data-cat="premium" role="tab">
+          <span class="cat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3 L14.5 9 L21 9.5 L16 14 L17.5 20.5 L12 17 L6.5 20.5 L8 14 L3 9.5 L9.5 9 Z"/>
+            </svg>
+          </span><span>प्रीमियम</span>
+        </button>
+      </div>
     </div>
   </section>
 
@@ -107,49 +212,248 @@
     <div class="grid" id="productGrid"></div>
   </main>
 
-  <footer class="site-footer" id="journal">
-    <div class="container footer-grid">
-      <div>
-        <div class="brand" style="color:#f2d89f;">
-          <span class="brand-mark">Y</span>
-          <span>YugaNaturals <small style="color:#8a7a68">लाकडी घाण्यावर काढलेले • शेतातून थेट</small></span>
+  <section class="why-choose">
+    <div class="container">
+      <h2>आम्ही YugaNaturals का निवडावे?</h2>
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="why-icon">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><path d="M32 8 C 20 14, 16 26, 18 36 L 32 54 L 46 36 C 48 26, 44 14, 32 8 Z M 32 18 L 32 44 M 26 28 L 32 34 M 38 28 L 32 34" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>देशी स्रोत</h3>
+          <p>भारतातील नेटिव्ह प्रदेशांमधून सर्वोच्च दर्जाचा कच्चा माल.</p>
         </div>
-        <p>आंध्र प्रदेशातील एका लहान खेड्यातील घाण्यात जन्मलेला, YugaNaturals हा एक प्रेमाचा ब्रँड आहे जो कच्ची-घाणी परंपरेचे पुनरुज्जीवन करत आहे आणि भारतीय जेवणाच्या टेबलावर प्रामाणिक तेल परत आणत आहे.</p>
+        <div class="why-item">
+          <div class="why-icon">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="10" width="28" height="6" fill="currentColor"/><path d="M20 16 L 20 40 L 44 40 L 44 16 M 32 16 L 32 40" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="32" cy="48" r="6" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M10 54 L 54 54" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </div>
+          <h3>पारंपरिक प्रक्रिया</h3>
+          <p>कमीत कमी प्रक्रिया, लाकडी घाणीची हळुवार पद्धत — जास्तीत जास्त पोषण.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><rect x="14" y="10" width="36" height="44" rx="3" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M22 22 L 28 28 L 42 16 M 22 34 L 28 40 L 42 28 M 22 46 L 28 46" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="48" cy="44" r="8" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M53 49 L 58 54" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </div>
+          <h3>कडक गुणवत्ता चाचणी</h3>
+          <p>४०+ लॅब टेस्ट करून सर्वोत्कृष्ट तेच तुमच्यापर्यंत पोहोचते.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">
+            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="44" r="6" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="50" cy="44" r="6" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M12 44 L 18 44 M 8 36 L 18 36 L 22 28 L 38 28 L 44 36 L 54 36 L 54 44 M 30 36 L 30 22 L 40 22 L 40 28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>ग्रामीण समृद्धी</h3>
+          <p>५००० हून अधिक शेतकरी कुटुंबांना प्रत्येक ऑर्डरसह सक्षम करत आहोत.</p>
+        </div>
       </div>
-      <div>
-        <h4>खरेदी</h4>
-        <ul>
-          <li><a href="/">सर्व तेले</a></li>
-          <li><a href="/">सर्वाधिक विक्री</a></li>
-          <li><a href="/">भेट संच</a></li>
-          <li><a href="/">सबस्क्रिप्शन</a></li>
-        </ul>
+    </div>
+  </section>
+
+  <section class="native-ingredients">
+    <div class="container">
+      <h2>देशी घटक. कोणताही पर्याय नाही.</h2>
+      <div class="native-tiles">
+        <div class="native-tile t1">
+          <h3>देशी भूगोलातून<br/>हंगामानुसार</h3>
+          <p>स्थानिक घटक मिळवताना आम्ही प्रत्येक घटक काळजीपूर्वक निवडतो.</p>
+        </div>
+        <div class="native-tile t2">
+          <h3>आम्ही काय शोधतो?</h3>
+          <p>जास्त उत्पादन नाही. कमी किंमत नाही. फक्त चव, पोषण आणि आत्मा.</p>
+        </div>
+        <div class="native-tile t3">
+          <h3>अशुद्धी बाहेर.<br/>चांगुलपणा आत.</h3>
+          <p>फक्त उत्तम बिया आणि शुद्धतम तेल कटाक्षावर उतरते.</p>
+        </div>
+        <div class="native-tile t4">
+          <h3>A2 तेल आणि<br/>पारंपरिक बिया</h3>
+          <p>आम्ही उत्तम देशी बिया आणि नेटिव्ह जातींचा शोध घेत असतो.</p>
+        </div>
       </div>
+    </div>
+  </section>
+
+  <section class="rewards-bar">
+    <div class="container">
+      <strong>YugaNaturals रिवॉर्ड्स</strong> · पहिल्या ऑर्डरवर <strong>१५% पर्यंत सूट</strong> · पुरिटी कॉइन्ससह
+    </div>
+  </section>
+
+  <footer class="site-footer" id="journal">
+    <svg class="footer-motif" viewBox="0 0 1200 180" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <g fill="rgba(255,255,255,0.06)">
+        <path d="M60 180 C 60 120, 90 100, 90 70 C 90 100, 120 120, 120 180 Z"/>
+        <path d="M200 180 L 200 90 M 180 110 L 200 130 L 220 110 M 170 140 L 200 160 L 230 140"/>
+        <circle cx="340" cy="60" r="28" stroke="rgba(255,255,255,0.08)" stroke-width="2" fill="none"/>
+        <path d="M340 32 L 340 20 M 340 100 L 340 88 M 312 60 L 300 60 M 380 60 L 368 60 M 320 40 L 312 32 M 360 40 L 368 32 M 320 80 L 312 88 M 360 80 L 368 88"/>
+        <path d="M500 180 L 500 110 M 480 130 L 500 150 L 520 130 M 470 160 L 500 178 L 530 160"/>
+        <rect x="780" y="150" width="60" height="25" fill="rgba(255,255,255,0.05)"/>
+        <circle cx="790" cy="175" r="5"/><circle cx="830" cy="175" r="5"/>
+        <path d="M920 180 L 920 100 C 910 100, 905 115, 915 130 C 925 115, 930 100, 920 100 Z"/>
+        <path d="M1050 180 L 1050 120 M 1030 140 L 1050 160 L 1070 140"/>
+      </g>
+    </svg>
+    <div class="container footer-grid">
+      <div class="footer-col-brand">
+        <div class="footer-brand">
+          <span class="wordmark">yugaNaturals</span><sup>®</sup>
+        </div>
+        <p class="footer-addr">
+          <strong>Corporate Office</strong> — Sector 32, Gurugram<br/>
+          <strong>Registered Office</strong> — IMT Manesar, Gurugram
+        </p>
+        <p class="footer-officer">
+          तक्रार निवारण अधिकारी: <a href="#">सुयश गुप्ता</a>
+        </p>
+        <form class="newsletter" onsubmit="event.preventDefault(); YugaUI.toast('सबस्क्राईब केले!');">
+          <div class="newsletter-label">न्यूजलेटरसाठी सबस्क्राईब करा</div>
+          <div class="newsletter-row">
+            <input type="email" placeholder="ईमेल" required />
+            <button type="submit" aria-label="सबस्क्राईब">→</button>
+          </div>
+        </form>
+        <div class="footer-copy">© २०२६ YugaNaturals Farms Pvt. Ltd.</div>
+      </div>
+
       <div>
-        <h4>कंपनी</h4>
+        <h4>सेवा</h4>
         <ul>
+          <li><a href="/">शॉप</a></li>
+          <li><a href="#">ऑर्डर ट्रॅक करा</a></li>
           <li><a href="#story">आमची कथा</a></li>
-          <li><a href="#process">प्रक्रिया</a></li>
-          <li><a href="#journal">जर्नल</a></li>
+          <li><a href="#journal">ब्लॉग</a></li>
+          <li><a href="#">कॉर्पोरेट माहिती</a></li>
           <li><a href="#">संपर्क</a></li>
         </ul>
       </div>
+
       <div>
-        <h4>मदत</h4>
+        <h4>धोरणे</h4>
         <ul>
-          <li><a href="#">शिपिंग आणि परतफेड</a></li>
-          <li><a href="#">वारंवार विचारले जाणारे प्रश्न</a></li>
-          <li><a href="#">ऑर्डर ट्रॅक करा</a></li>
-          <li><a href="#">घाऊक</a></li>
+          <li><a href="#">गोपनीयता</a></li>
+          <li><a href="#">शिपिंग</a></li>
+          <li><a href="#">परतफेड</a></li>
+          <li><a href="#">अटी व शर्ती</a></li>
+          <li><a href="#">साइटमॅप</a></li>
         </ul>
       </div>
+
+      <div class="footer-col-help">
+        <h4>मदत हवी?</h4>
+        <a href="#" class="contact-pill">संपर्क करा</a>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook"><span>f</span></a>
+          <a href="#" aria-label="Instagram"><span>◎</span></a>
+          <a href="mailto:hello@yuganaturals.com" aria-label="Email"><span>✉</span></a>
+          <a href="#" aria-label="X"><span>𝕏</span></a>
+        </div>
+        <div class="app-badges">
+          <div class="app-download-label">अॅप डाउनलोड करा</div>
+          <a href="#" class="app-badge"><span class="ab-icon">▶</span><span><small>GET IT ON</small>Google Play</span></a>
+          <a href="#" class="app-badge"><span class="ab-icon"></span><span><small>Download on the</small>App Store</span></a>
+        </div>
+      </div>
     </div>
-    <div class="footer-bottom container">© २०२६ YugaNaturals Farms Pvt. Ltd. • काळजीने बनवलेले, संयमाने घाण्यावर काढलेले.</div>
   </footer>
+
+  <a href="https://wa.me/919999999999" class="wa-float" aria-label="WhatsApp वर संपर्क करा" target="_blank" rel="noopener">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#fff" d="M16 3C8.8 3 3 8.8 3 16c0 2.5.7 4.8 1.9 6.8L3 29l6.4-1.9c1.9 1.1 4.2 1.7 6.6 1.7 7.2 0 13-5.8 13-13S23.2 3 16 3zm0 23.7c-2.1 0-4.1-.6-5.8-1.6l-.4-.2-3.8 1.1 1.1-3.7-.3-.4c-1.1-1.8-1.7-3.8-1.7-6 0-6 4.9-10.9 10.9-10.9s10.9 4.9 10.9 10.9-4.9 10.8-10.9 10.8zm6.2-8.1c-.3-.2-2-1-2.3-1.1-.3-.1-.5-.2-.8.2-.2.3-.9 1.1-1.1 1.3-.2.2-.4.3-.7.1s-1.4-.5-2.7-1.7c-1-.9-1.6-2-1.8-2.3-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.6.1-.2.2-.3.3-.5.1-.2 0-.4 0-.6-.1-.2-.8-1.9-1-2.6-.3-.7-.5-.6-.7-.6h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.5 1.1 2.9 1.2 3.1.1.2 2.1 3.3 5.2 4.6 2.6 1.1 3.1.9 3.7.8.5 0 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.3-.3-.4-.6-.5z"/>
+    </svg>
+  </a>
 
   <div class="toast" id="toast"></div>
 
   <script src="/js/api.js"></script>
+  <script src="/js/ui.js"></script>
   <script src="/js/main.js"></script>
+  <script>
+    (function () {
+      const stage  = document.getElementById('bottleStage');
+      const frame  = document.getElementById('bottleFrame');
+      if (!stage || !frame) return;
+
+      const TOTAL = 500;
+      const pad = (n) => String(n).padStart(3, '0');
+      const frameSrc = (i) => `/frames/${pad(i)}.png`;
+
+      // Progressive preloading — 500 PNGs at ~700KB each can't all load at once.
+      // Phase 1: preload every 10th frame (50 frames) so a full rotation is playable fast.
+      // Phase 2 (on idle): fill in the in-between frames for butter-smooth scrubbing.
+      const preloaded = new Array(TOTAL + 1);
+      function preload(i) {
+        if (i < 1 || i > TOTAL || preloaded[i]) return;
+        const img = new Image();
+        img.src = frameSrc(i);
+        preloaded[i] = img;
+      }
+      for (let i = 1; i <= TOTAL; i += 10) preload(i);
+      const backfill = () => {
+        for (let i = 1; i <= TOTAL; i++) preload(i);
+      };
+      if ('requestIdleCallback' in window) requestIdleCallback(backfill, { timeout: 4000 });
+      else setTimeout(backfill, 1200);
+
+      // Continuous auto-rotation. Hovering pauses auto and lets the cursor
+      // drive the frame directly; on leave it resumes where it left off.
+      const AUTO_PERIOD_MS = 6000;  // time for one full 500-frame rotation
+      let currentFrame = 1;
+      let displayedFrame = 0;
+      let hovering = false;
+      let lastTs = 0;
+      let cursorFrame = 1;
+
+      function applyFrame(i) {
+        const clamped = Math.max(1, Math.min(TOTAL, Math.round(i)));
+        if (clamped === displayedFrame) return;
+        displayedFrame = clamped;
+        frame.src = frameSrc(clamped);
+      }
+
+      function loop(ts) {
+        const dt = lastTs ? (ts - lastTs) : 16;
+        lastTs = ts;
+        if (hovering) {
+          // Ease current frame toward the cursor-driven target
+          const delta = cursorFrame - currentFrame;
+          currentFrame += delta * 0.25;
+        } else {
+          // Advance continuously; wrap from frame 25 back to 1 seamlessly
+          const advance = (TOTAL * dt) / AUTO_PERIOD_MS;
+          currentFrame += advance;
+          if (currentFrame > TOTAL) currentFrame -= TOTAL - 1;
+        }
+        applyFrame(currentFrame);
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+
+      stage.addEventListener('mouseenter', () => {
+        hovering = true;
+        stage.classList.add('is-hover');
+      });
+      stage.addEventListener('mouseleave', () => {
+        hovering = false;
+        stage.classList.remove('is-hover');
+      });
+      stage.addEventListener('mousemove', (e) => {
+        const rect = stage.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const ratio = Math.max(0, Math.min(1, x / rect.width));
+        cursorFrame = 1 + ratio * (TOTAL - 1);
+      });
+      stage.addEventListener('touchstart', () => { hovering = true; }, { passive: true });
+      stage.addEventListener('touchend',   () => { hovering = false; }, { passive: true });
+      stage.addEventListener('touchmove', (e) => {
+        if (!e.touches[0]) return;
+        const rect = stage.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (e.touches[0].clientX - rect.left) / rect.width));
+        cursorFrame = 1 + ratio * (TOTAL - 1);
+      }, { passive: true });
+
+      stage.addEventListener('click', () => {
+        window.location.href = '/product.html?slug=cold-pressed-groundnut-oil';
+      });
+    })();
+  </script>
 </body>
 </html>
